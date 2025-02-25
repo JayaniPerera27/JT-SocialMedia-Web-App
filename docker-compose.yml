@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: chatapp-backend
+    container_name: chatapp-backend-container
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: chatapp-frontend
+    container_name: chatapp-frontend-container
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
