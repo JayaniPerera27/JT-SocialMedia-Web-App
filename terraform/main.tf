@@ -7,6 +7,7 @@ resource "aws_security_group" "web_sg" {
   name        = "JT-social-media"
   description = "Allow HTTP, HTTPS, and SSH inbound traffic"
 
+  # SSH access (replace with your trusted IP for better security)
   ingress {
     from_port   = 22
     to_port     = 22
@@ -14,7 +15,7 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["212.104.231.122/32"]  # Replace with your trusted IP for SSH access
   }
 
-  # HTTP
+  # HTTP access
   ingress {
     from_port   = 80
     to_port     = 80
@@ -22,7 +23,7 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP access from any IP
   }
 
-  # HTTPS
+  # HTTPS access
   ingress {
     from_port   = 443
     to_port     = 443
@@ -30,12 +31,12 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # Allow HTTPS access from any IP
   }
 
-  # Custom port (e.g., for application running on port 5000 or 3000)
+  # Custom port for application (adjust the port if needed)
   ingress {
     from_port   = 5000
     to_port     = 5000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Adjust the source IPs if needed
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Allow communication between instances
@@ -66,11 +67,18 @@ resource "aws_instance" "web" {
   }
 
   # Provisioning to setup the application (Optional)
-  provisioner "local-exec" {
-    command = <<-EOT
-      # Additional provisioning commands can be placed here if needed
-    EOT
-    interpreter = ["PowerShell", "-Command"]
+  provisioner "remote-exec" {
+    inline = [
+      # Example commands for provisioning the server
+      "sudo apt-get update -y",
+      "sudo apt-get install -y apache2"
+    ]
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("~/.ssh/JT-web-app.pem")  # Use correct path to your private key
+      host        = self.public_ip
+    }
   }
 }
 
