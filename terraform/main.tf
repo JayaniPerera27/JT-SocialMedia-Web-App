@@ -59,7 +59,7 @@ resource "aws_key_pair" "deployer" {
   
   # Replace this with your actual public key in OpenSSH format
   # The key should start with "ssh-rsa" and be a single line
-  public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0nZ9Kz2fXi7jp0g20f9u
+  public_key = "ssh-rsa MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0nZ9Kz2fXi7jp0g20f9u
 AmfyRZd142xn6I1gg6DOhb08jwK6d/UOb4rYqAHiLFmmObhVSM2JpjaQMMz2aKCE
 1Er/t6mHRV4LtB9rWurMmaju4w5ORZe4ywtkG7tA+RrAwqwm988HstHQJEv345iu
 iC3gnJMLiED8agqwySpDBECaVGWN3WVAiu2fq3/CCNT9+ugdgbEfERI4OcOAvSq0
